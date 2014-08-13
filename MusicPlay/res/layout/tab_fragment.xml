@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom_btn="http://schemas.android.com/apk/res/com.dzt.musicplay"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/top_bg"
+    android:orientation="horizontal" >
+
+    <com.dzt.musicplay.widgets.CustomImageButton
+        android:id="@+id/btn_song"
+        style="@style/TabImgBtnStyle"
+        android:contentDescription="@string/content_description"
+        android:paddingLeft="10dp"
+        android:src="@drawable/btn_song_selector"
+        custom_btn:textValue="@string/song_title" />
+
+    <View
+        android:layout_width="3dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/midfeather" />
+
+    <com.dzt.musicplay.widgets.CustomImageButton
+        android:id="@+id/btn_singer"
+        style="@style/TabImgBtnStyle"
+        android:contentDescription="@string/content_description"
+        android:paddingRight="10dp"
+        android:src="@drawable/btn_singer_selector"
+        custom_btn:textValue="@string/singer_title" />
+
+</LinearLayout>
