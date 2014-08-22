@@ -21,6 +21,8 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 
 import com.dzt.musicplay.R;
+
+import org.videolan.libvlc.Media;
 import org.videolan.vlc.audio.MusicInfo;
 
 public class MediaUtils {
@@ -119,11 +121,11 @@ public class MediaUtils {
 		return map;
 	}
 
-//	public static List<MusicInfo> getMusicList() {
-//		List<MusicInfo> list = new ArrayList<MusicInfo>();
-//		
-//		return list;
-//	}
+	// public static List<MusicInfo> getMusicList() {
+	// List<MusicInfo> list = new ArrayList<MusicInfo>();
+	//
+	// return list;
+	// }
 
 	/**
 	 * 格式化时间，将毫秒转换为分:秒格式

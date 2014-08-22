@@ -22,7 +22,7 @@ package org.videolan.vlc.interfaces;
 
 import java.util.List;
 
-import org.videolan.vlc.audio.MusicInfo;
+import org.videolan.libvlc.Media;
 import org.videolan.vlc.audio.RepeatType;
 
 import android.graphics.Bitmap;
@@ -81,6 +81,6 @@ public interface IAudioPlayerControl {
 	float getRate();
 
 	// add by dzt 2014.08.9
-	void loadMediaList(List<MusicInfo> mediaPathList, int position);
+	void loadMediaList(List<Media> mediaPathList, int position);
 
 }

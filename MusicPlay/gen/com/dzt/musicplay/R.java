@@ -25,6 +25,252 @@ public final class R {
         public static final int subtitles_encoding_values=0x7f060005;
     }
     public static final class attr {
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int advanced_options_divider=0x7f01000f;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int advanced_options_style=0x7f010032;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int audio_browser_separator=0x7f010010;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int audio_player_header_time=0x7f010012;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int audio_playlist_shadow=0x7f01002f;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int background_header=0x7f010009;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int background_menu=0x7f010008;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int background_menu_divider=0x7f010007;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int background_player=0x7f01000a;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int background_playlist=0x7f01000b;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int font_default=0x7f01000c;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int font_light=0x7f01000d;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int header_fadein_overlay=0x7f010030;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int header_fadeout_overlay=0x7f010031;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_audio_player_dots=0x7f010024;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_down_style=0x7f01001b;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_equalizer_normal_style=0x7f01001a;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_jumpto_normal_style=0x7f010019;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_menu_audio=0x7f01002a;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_menu_folder=0x7f01002b;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_menu_history=0x7f01002c;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_menu_video=0x7f010029;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_move_media=0x7f01002d;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_next=0x7f010028;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_pause=0x7f010026;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_play=0x7f010025;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_playlist_normal=0x7f01001d;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_playlist_pressed=0x7f01001e;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_previous=0x7f010027;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_repeat_normal=0x7f01001f;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_repeat_one=0x7f010021;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_repeat_pressed=0x7f010020;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_shuffle_normal=0x7f010022;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_shuffle_pressed=0x7f010023;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_sleep_normal_style=0x7f010018;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_speed_normal_style=0x7f010017;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int ic_up_style=0x7f01001c;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int item_common_pressed=0x7f010003;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int item_common_selected=0x7f010004;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int item_footer=0x7f010005;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int list_menu=0x7f010013;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int list_subtitle=0x7f010014;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int list_title=0x7f010016;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int list_title_last=0x7f010015;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int marginTopContent=0x7f010034;
+        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int mini_player_top_shadow=0x7f01002e;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int overhangSize=0x7f010033;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int playlist_item_drag_shadow=0x7f010011;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int playlist_item_footer=0x7f010006;
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
 <p>This may also be a reference to a resource (in the form
@@ -52,9 +298,44 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int textValue=0x7f010002;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int video_player_overlay=0x7f01000e;
     }
     public static final class color {
+        public static final int action_bar_title=0x7f080012;
+        public static final int background_common=0x7f080004;
+        public static final int background_menu=0x7f080008;
+        public static final int background_menu_divider=0x7f080007;
+        public static final int background_player=0x7f080005;
+        public static final int background_playlist=0x7f080006;
+        public static final int background_remote=0x7f080014;
+        public static final int black=0x7f08000e;
+        public static final int black1=0x7f080015;
+        public static final int black2=0x7f080016;
+        public static final int black3=0x7f080017;
+        public static final int bt_list_title=0x7f08001a;
+        public static final int darkerorange=0x7f08000d;
+        public static final int darkgrey=0x7f080013;
+        public static final int darkorange=0x7f08000c;
+        public static final int font_default=0x7f080009;
+        public static final int font_light=0x7f08000a;
+        public static final int grey1=0x7f080018;
+        public static final int grey2=0x7f080019;
+        public static final int item_common_pressed=0x7f080001;
+        public static final int item_common_selected=0x7f080002;
+        public static final int item_footer=0x7f080003;
+        public static final int list_subtitle=0x7f08001b;
+        public static final int list_title=0x7f08001c;
+        public static final int list_title_last=0x7f08001d;
+        public static final int orange=0x7f08000b;
         public static final int transparent=0x7f080000;
+        public static final int transparent_gray=0x7f080010;
+        public static final int transparent_white=0x7f080011;
+        public static final int white=0x7f08000f;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -65,6 +346,10 @@ containing a value of this type.
          */
         public static final int activity_horizontal_margin=0x7f090000;
         public static final int activity_vertical_margin=0x7f090001;
+        public static final int audio_browser_item_size=0x7f090004;
+        public static final int listview_bottom_padding=0x7f090005;
+        public static final int shadow_width=0x7f090002;
+        public static final int widget_margin=0x7f090003;
     }
     public static final class drawable {
         public static final int bg=0x7f020000;
@@ -105,37 +390,67 @@ containing a value of this type.
         public static final int list_driver=0x7f020023;
         public static final int mark=0x7f020024;
         public static final int midfeather=0x7f020025;
-        public static final int song_bottom_bg=0x7f020026;
-        public static final int tab_normal=0x7f020027;
-        public static final int tab_selected=0x7f020028;
-        public static final int top_bg=0x7f020029;
+        public static final int next_selector=0x7f020026;
+        public static final int page_icon=0x7f020027;
+        public static final int page_icon_sel=0x7f020028;
+        public static final int page_icon_selector=0x7f020029;
+        public static final int previous_selector=0x7f02002a;
+        public static final int song_bottom_bg=0x7f02002b;
+        public static final int tab_normal=0x7f02002c;
+        public static final int tab_selected=0x7f02002d;
+        public static final int top_bg=0x7f02002e;
     }
     public static final class id {
-        public static final int action_settings=0x7f0b0010;
+        public static final int action_settings=0x7f0b0023;
+        public static final int artist=0x7f0b0014;
         public static final int bootom_play_bar=0x7f0b0003;
+        public static final int btn_next_play=0x7f0b001d;
         public static final int btn_play_pause=0x7f0b0007;
-        public static final int btn_singer=0x7f0b000f;
-        public static final int btn_song=0x7f0b000e;
-        public static final int iv_album=0x7f0b000a;
+        public static final int btn_play_pause_play=0x7f0b001b;
+        public static final int btn_previous_play=0x7f0b001c;
+        public static final int btn_singer=0x7f0b0022;
+        public static final int btn_song=0x7f0b0021;
+        public static final int cover=0x7f0b000c;
+        public static final int footer=0x7f0b0010;
+        public static final int icon_1=0x7f0b0018;
+        public static final int icon_2=0x7f0b0019;
+        public static final int item_expansion=0x7f0b0013;
+        public static final int iv_album=0x7f0b0020;
+        public static final int iv_albums_image=0x7f0b000a;
         public static final int iv_albums_play=0x7f0b0004;
+        public static final int layout_footer=0x7f0b0016;
+        public static final int layout_item=0x7f0b000b;
         public static final int ll_main=0x7f0b0000;
-        public static final int singer_list=0x7f0b0008;
-        public static final int song_list=0x7f0b0009;
-        public static final int song_name=0x7f0b000b;
+        public static final int move=0x7f0b0015;
+        public static final int playlist_item=0x7f0b0012;
+        public static final int sb_play=0x7f0b001a;
+        public static final int singer_list=0x7f0b001e;
+        public static final int song_list=0x7f0b001f;
+        public static final int song_name=0x7f0b000d;
         public static final int song_name_play=0x7f0b0005;
-        public static final int song_signer=0x7f0b000d;
+        public static final int song_signer=0x7f0b000f;
         public static final int song_signer_play=0x7f0b0006;
-        public static final int song_time=0x7f0b000c;
+        public static final int song_time=0x7f0b000e;
         public static final int tab_view=0x7f0b0001;
         public static final int tabpage_frame=0x7f0b0002;
+        public static final int title=0x7f0b0011;
+        public static final int tv_name_albums=0x7f0b0008;
+        public static final int tv_singer_albums=0x7f0b0009;
+        public static final int vp_play=0x7f0b0017;
     }
     public static final class layout {
         public static final int activity_music_play=0x7f030000;
-        public static final int singer_fragment=0x7f030001;
-        public static final int singer_list_item=0x7f030002;
-        public static final int song_fragment=0x7f030003;
-        public static final int song_list_item=0x7f030004;
-        public static final int tab_fragment=0x7f030005;
+        public static final int albums_fragment=0x7f030001;
+        public static final int audio_browser_item=0x7f030002;
+        public static final int audio_browser_separator=0x7f030003;
+        public static final int audio_playlist_item=0x7f030004;
+        public static final int lyric_fragment=0x7f030005;
+        public static final int player_activity=0x7f030006;
+        public static final int singer_fragment=0x7f030007;
+        public static final int singer_list_item=0x7f030008;
+        public static final int song_fragment=0x7f030009;
+        public static final int song_list_item=0x7f03000a;
+        public static final int tab_fragment=0x7f03000b;
     }
     public static final class menu {
         public static final int music_play=0x7f0a0000;
@@ -504,5 +819,34 @@ containing a value of this type.
           @attr name com.dzt.musicplay:textValue
         */
         public static final int CustomButtonAttrs_textValue = 2;
+        /** Attributes that can be used with a SlidingPaneLayout.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #SlidingPaneLayout_overhangSize com.dzt.musicplay:overhangSize}</code></td><td></td></tr>
+           </table>
+           @see #SlidingPaneLayout_overhangSize
+         */
+        public static final int[] SlidingPaneLayout = {
+            0x7f010033
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.dzt.musicplay.R.attr#overhangSize}
+          attribute's value can be found in the {@link #SlidingPaneLayout} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.dzt.musicplay:overhangSize
+        */
+        public static final int SlidingPaneLayout_overhangSize = 0;
     };
 }

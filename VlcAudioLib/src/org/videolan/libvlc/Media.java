@@ -25,409 +25,506 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Locale;
 
+import org.videolan.vlc.MediaDatabase;
+import org.videolan.vlc.util.Util;
+import org.videolan.vlc.util.VLCInstance;
+
+import com.dzt.vlcaudiolib.R;
+
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
 public class Media implements Comparable<Media> {
-    public final static String TAG = "VLC/LibVLC/Media";
+	public final static String TAG = "VLC/LibVLC/Media";
 
-    public final static HashSet<String> VIDEO_EXTENSIONS;
-    public final static HashSet<String> AUDIO_EXTENSIONS;
-    public final static String EXTENSIONS_REGEX;
-    public final static HashSet<String> FOLDER_BLACKLIST;
+	public final static HashSet<String> VIDEO_EXTENSIONS;
+	public final static HashSet<String> AUDIO_EXTENSIONS;
+	public final static HashSet<String> PICTURE_EXTENSIONS;
+	public final static String EXTENSIONS_REGEX;
+	public final static HashSet<String> FOLDER_BLACKLIST;
 
-    static {
-        String[] video_extensions = {
-                ".3g2", ".3gp", ".3gp2", ".3gpp", ".amv", ".asf", ".avi", ".divx", ".drc", ".dv",
-                ".f4v", ".flv", ".gvi", ".gxf", ".ismv", ".iso", ".m1v", ".m2v", ".m2t", ".m2ts",
-                ".m4v", ".mkv", ".mov", ".mp2", ".mp2v", ".mp4", ".mp4v", ".mpe", ".mpeg",
-                ".mpeg1", ".mpeg2", ".mpeg4", ".mpg", ".mpv2", ".mts", ".mtv", ".mxf", ".mxg",
-                ".nsv", ".nut", ".nuv", ".ogm", ".ogv", ".ogx", ".ps", ".rec", ".rm", ".rmvb",
-                ".tod", ".ts", ".tts", ".vob", ".vro", ".webm", ".wm", ".wmv", ".wtv", ".xesc" };
+	static {
+		String[] video_extensions = { ".3g2", ".3gp", ".3gp2", ".3gpp", ".amv",
+				".asf", ".avi", ".divx", ".drc", ".dv", ".f4v", ".flv", ".gvi",
+				".gxf", ".ismv", ".iso", ".m1v", ".m2v", ".m2t", ".m2ts",
+				".m4v", ".mkv", ".mov", ".mp2", ".mp2v", ".mp4", ".mp4v",
+				".mpe", ".mpeg", ".mpeg1", ".mpeg2", ".mpeg4", ".mpg", ".mpv2",
+				".mts", ".mtv", ".mxf", ".mxg", ".nsv", ".nut", ".nuv", ".ogm",
+				".ogv", ".ogx", ".ps", ".rec", ".rm", ".rmvb", ".tod", ".ts",
+				".tts", ".vob", ".vro", ".webm", ".wm", ".wmv", ".wtv", ".xesc" };
 
-        String[] audio_extensions = {
-                ".3ga", ".a52", ".aac", ".ac3", ".adt", ".adts", ".aif", ".aifc", ".aiff", ".amr",
-                ".aob", ".ape", ".awb", ".caf", ".dts", ".flac", ".it", ".m4a", ".m4b", ".m4p",
-                ".mid", ".mka", ".mlp", ".mod", ".mpa", ".mp1", ".mp2", ".mp3", ".mpc", ".mpga",
-                ".oga", ".ogg", ".oma", ".opus", ".ra", ".ram", ".rmi", ".s3m", ".spx", ".tta",
-                ".voc", ".vqf", ".w64", ".wav", ".wma", ".wv", ".xa", ".xm" };
+		String[] audio_extensions = { ".3ga", ".a52", ".aac", ".ac3", ".adt",
+				".adts", ".aif", ".aifc", ".aiff", ".amr", ".aob", ".ape",
+				".awb", ".caf", ".dts", ".flac", ".it", ".m4a", ".m4b", ".m4p",
+				".mid", ".mka", ".mlp", ".mod", ".mpa", ".mp1", ".mp2", ".mp3",
+				".mpc", ".mpga", ".oga", ".ogg", ".oma", ".opus", ".ra",
+				".ram", ".rmi", ".s3m", ".spx", ".tta", ".voc", ".vqf", ".w64",
+				".wav", ".wma", ".wv", ".xa", ".xm" };
 
-        String[] folder_blacklist = {
-                "/alarms",
-                "/notifications",
-                "/ringtones",
-                "/media/alarms",
-                "/media/notifications",
-                "/media/ringtones",
-                "/media/audio/alarms",
-                "/media/audio/notifications",
-                "/media/audio/ringtones",
-                "/Android/data/" };
+		String[] pic_extensions = { ".bmp", ".png", ".gif", ".jpeg", ".jpg" };
 
-        VIDEO_EXTENSIONS = new HashSet<String>();
-        for (String item : video_extensions)
-            VIDEO_EXTENSIONS.add(item);
-        AUDIO_EXTENSIONS = new HashSet<String>();
-        for (String item : audio_extensions)
-            AUDIO_EXTENSIONS.add(item);
+		String[] folder_blacklist = { "/alarms", "/notifications",
+				"/ringtones", "/media/alarms", "/media/notifications",
+				"/media/ringtones", "/media/audio/alarms",
+				"/media/audio/notifications", "/media/audio/ringtones",
+				"/Android/data/" };
 
-        StringBuilder sb = new StringBuilder(115);
-        sb.append(".+(\\.)((?i)(");
-        sb.append(video_extensions[0].substring(1));
-        for(int i = 1; i < video_extensions.length; i++) {
-            sb.append('|');
-            sb.append(video_extensions[i].substring(1));
-        }
-        for(int i = 0; i < audio_extensions.length; i++) {
-            sb.append('|');
-            sb.append(audio_extensions[i].substring(1));
-        }
-        sb.append("))");
-        EXTENSIONS_REGEX = sb.toString();
-        FOLDER_BLACKLIST = new HashSet<String>();
-        for (String item : folder_blacklist)
-            FOLDER_BLACKLIST.add(android.os.Environment.getExternalStorageDirectory().getPath() + item);
-    }
+		VIDEO_EXTENSIONS = new HashSet<String>();
+		for (String item : video_extensions)
+			VIDEO_EXTENSIONS.add(item);
+		AUDIO_EXTENSIONS = new HashSet<String>();
+		for (String item : audio_extensions)
+			AUDIO_EXTENSIONS.add(item);
+		PICTURE_EXTENSIONS = new HashSet<String>();
+		for (String item : pic_extensions)
+			PICTURE_EXTENSIONS.add(item);
 
-    public final static int TYPE_ALL = -1;
-    public final static int TYPE_VIDEO = 0;
-    public final static int TYPE_AUDIO = 1;
-    public final static int TYPE_GROUP = 2;
+		StringBuilder sb = new StringBuilder(115);
+		sb.append(".+(\\.)((?i)(");
+		sb.append(video_extensions[0].substring(1));
+		for (int i = 1; i < video_extensions.length; i++) {
+			sb.append('|');
+			sb.append(video_extensions[i].substring(1));
+		}
+		for (int i = 0; i < audio_extensions.length; i++) {
+			sb.append('|');
+			sb.append(audio_extensions[i].substring(1));
+		}
+		sb.append("))");
+		EXTENSIONS_REGEX = sb.toString();
+		FOLDER_BLACKLIST = new HashSet<String>();
+		for (String item : folder_blacklist)
+			FOLDER_BLACKLIST.add(android.os.Environment
+					.getExternalStorageDirectory().getPath() + item);
+	}
 
-    /** Metadata from libvlc_media */
-    protected String mTitle;
-    private String mArtist;
-    private String mGenre;
-    private String mCopyright;
-    private String mAlbum;
-    private String mTrackNumber;
-    private String mDescription;
-    private String mRating;
-    private String mDate;
-    private String mSettings;
-    private String mNowPlaying;
-    private String mPublisher;
-    private String mEncodedBy;
-    private String mTrackID;
-    private String mArtworkURL;
+	public final static int TYPE_ALL = -1;
+	public final static int TYPE_VIDEO = 0;
+	public final static int TYPE_AUDIO = 1;
+	public final static int TYPE_PICTURE = 2;
+	public final static int TYPE_GROUP = 3;
 
-    private final String mLocation;
-    private String mFilename;
-    private long mTime = 0;
-    private int mAudioTrack = -1;
-    private int mSpuTrack = -2;
-    private long mLength = 0;
-    private int mType;
-    private int mWidth = 0;
-    private int mHeight = 0;
-    private Bitmap mPicture;
-    private boolean mIsPictureParsed;
+	/** Metadata from libvlc_media */
+	protected String mTitle;
+	private String mArtist;
+	private String mGenre;
+	private String mCopyright;
+	private String mAlbum;
+	private String mTrackNumber;
+	private String mDescription;
+	private String mRating;
+	private String mDate;
+	private String mSettings;
+	private String mNowPlaying;
+	private String mPublisher;
+	private String mEncodedBy;
+	private String mTrackID;
+	private String mArtworkURL;
 
-    /**
-     * Create a new Media
-     * @param libVLC A pointer to the libVLC instance. Should not be NULL
-     * @param URI The URI of the media.
-     */
-    public Media(LibVLC libVLC, String URI) {
-        if(libVLC == null)
-            throw new NullPointerException("libVLC was null");
+	private final String mLocation;
+	private String mFilename;
+	private long mTime = 0;
+	private int mAudioTrack = -1;
+	private int mSpuTrack = -2;
+	private long mLength = 0;
+	private int mType;
+	private int mWidth = 0;
+	private int mHeight = 0;
+	private Bitmap mPicture;
+	private boolean mIsPictureParsed;
 
-        mLocation = URI;
+	/**
+	 * Create a new Media
+	 * 
+	 * @param context
+	 *            Application context of the caller
+	 * @param media
+	 *            URI
+	 * @param addToDb
+	 *            Should it be added to the file database?
+	 */
+	public Media(String URI, Boolean addToDb) {
+		mLocation = URI;
 
-        mType = TYPE_ALL;
-        TrackInfo[] tracks = libVLC.readTracksInfo(mLocation);
+		mType = TYPE_ALL;
 
-        extractTrackInfo(tracks);
-    }
+		// TrackInfo[] tracks = mLibVlc.readTracksInfo(mLocation);
 
-    private void extractTrackInfo(TrackInfo[] tracks) {
-        if (tracks == null)
-            return;
+		// extractTrackInfo(tracks);
+		getTrackInfo();
 
-        for (TrackInfo track : tracks) {
-            if (track.Type == TrackInfo.TYPE_VIDEO) {
-                mType = TYPE_VIDEO;
-                mWidth = track.Width;
-                mHeight = track.Height;
-            } else if (mType == TYPE_ALL && track.Type == TrackInfo.TYPE_AUDIO){
-                mType = TYPE_AUDIO;
-            } else if (track.Type == TrackInfo.TYPE_META) {
-                mLength = track.Length;
-                mTitle = track.Title;
-                mArtist = getValueWrapper(track.Artist, UnknownStringType.Artist);
-                mAlbum = getValueWrapper(track.Album, UnknownStringType.Album);
-                mGenre = getValueWrapper(track.Genre, UnknownStringType.Genre);
-                mArtworkURL = track.ArtworkURL;
-                Log.d(TAG, "Title " + mTitle);
-                Log.d(TAG, "Artist " + mArtist);
-                Log.d(TAG, "Genre " + mGenre);
-                Log.d(TAG, "Album " + mAlbum);
-            }
-        }
+		if (addToDb) {
+			// Add this item to database
+			// MediaDatabase db = MediaDatabase.getInstance(context);
+			// db.addMedia(this);
+		}
+	}
 
-        /* No useful ES found */
-        if (mType == TYPE_ALL) {
-            int dotIndex = mLocation.lastIndexOf(".");
-            if (dotIndex != -1) {
-                String fileExt = mLocation.substring(dotIndex).toLowerCase(Locale.ENGLISH);
-                if( Media.VIDEO_EXTENSIONS.contains(fileExt) ) {
-                    mType = TYPE_VIDEO;
-                } else if (Media.AUDIO_EXTENSIONS.contains(fileExt)) {
-                    mType = TYPE_AUDIO;
-                }
-            }
-        }
-    }
+	/**
+	 * Create a new Media
+	 * 
+	 * @param libVLC
+	 *            A pointer to the libVLC instance. Should not be NULL
+	 * @param URI
+	 *            The URI of the media.
+	 */
+	public Media(LibVLC libVLC, String URI) {
+		if (libVLC == null)
+			throw new NullPointerException("libVLC was null");
 
-    public Media(String location, long time, long length, int type,
-            Bitmap picture, String title, String artist, String genre, String album,
-            int width, int height, String artworkURL, int audio, int spu) {
-        mLocation = location;
-        mFilename = null;
-        mTime = time;
-        mAudioTrack = audio;
-        mSpuTrack = spu;
-        mLength = length;
-        mType = type;
-        mPicture = picture;
-        mWidth = width;
-        mHeight = height;
+		mLocation = URI;
 
-        mTitle = title;
-        mArtist = getValueWrapper(artist, UnknownStringType.Artist);
-        mGenre = getValueWrapper(genre, UnknownStringType.Genre);
-        mAlbum = getValueWrapper(album, UnknownStringType.Album);
-        mArtworkURL = artworkURL;
-    }
+		mType = TYPE_ALL;
+		TrackInfo[] tracks = libVLC.readTracksInfo(mLocation);
 
-    private enum UnknownStringType { Artist , Genre, Album };
-    /**
-     * Uses introspection to read VLC l10n databases, so that we can sever the
-     * hard-coded dependency gracefully for 3rd party libvlc apps while still
-     * maintaining good l10n in VLC for Android.
-     *
-     * @see org.videolan.vlc.util.Util#getValue(String, int)
-     *
-     * @param string The default string
-     * @param type Alias for R.string.xxx
-     * @return The default string if not empty or string from introspection
-     */
-    private static String getValueWrapper(String string, UnknownStringType type) {
-        if(string != null && string.length() > 0) return string;
+		extractTrackInfo(tracks);
+	}
 
-        try {
-            Class<?> stringClass = Class.forName("org.videolan.vlc.R$string");
-            Class<?> utilClass = Class.forName("org.videolan.vlc.Util");
+	static private int checkMediaType(String fileName) {
+		String tmpFileName = fileName.toLowerCase(Locale.ENGLISH);
 
-            Integer value;
-            switch(type) {
-            case Album:
-                value = (Integer)stringClass.getField("unknown_album").get(null);
-                break;
-            case Genre:
-                value = (Integer)stringClass.getField("unknown_genre").get(null);
-                break;
-            case Artist:
-            default:
-                value = (Integer)stringClass.getField("unknown_artist").get(null);
-                break;
-            }
+		int dotIndex = tmpFileName.lastIndexOf(".");
+		if (dotIndex != -1) {
+			String fileExt = tmpFileName.substring(dotIndex);
 
-            Method getValueMethod = utilClass.getDeclaredMethod("getValue", String.class, Integer.TYPE);
-            // Util.getValue(string, R.string.xxx);
-            return (String) getValueMethod.invoke(null, string, value);
-        } catch (ClassNotFoundException e) {
-        } catch (IllegalArgumentException e) {
-        } catch (IllegalAccessException e) {
-        } catch (NoSuchFieldException e) {
-        } catch (NoSuchMethodException e) {
-        } catch (InvocationTargetException e) {
-        }
+			if (Media.VIDEO_EXTENSIONS.contains(fileExt)) {
+				return TYPE_VIDEO;
+			} else if (Media.AUDIO_EXTENSIONS.contains(fileExt)) {
+				return TYPE_AUDIO;
+			} else if (Media.PICTURE_EXTENSIONS.contains(fileExt)) {
+				return TYPE_PICTURE;
+			}
+		}
 
-        // VLC for Android translations not available (custom app perhaps)
-        // Use hardcoded English phrases.
-        switch(type) {
-        case Album:
-            return "Unknown Album";
-        case Genre:
-            return "Unknown Genre";
-        case Artist:
-        default:
-            return "Unknown Artist";
-        }
-    }
+		return TYPE_ALL;
+	}
 
-    /**
-     * Compare the filenames to sort items
-     */
-    @Override
-    public int compareTo(Media another) {
-        return mTitle.toUpperCase(Locale.getDefault()).compareTo(
-                another.getTitle().toUpperCase(Locale.getDefault()));
-    }
+	private void getTrackInfo() {
+		mLength = 0;
+		mTitle = "";
+		// mArtist = Util.getStringN(context, R.string.unknown_artist);
+		// mAlbum = Util.getStringN(context, R.string.unknown_album);
+		// mGenre = Util.getStringN(context, R.string.unknown_genre);
+		mArtworkURL = mLocation;
+		/*
+		 * Log.d(TAG, "Title " + mTitle); Log.d(TAG, "Artist " + mArtist);
+		 * Log.d(TAG, "Genre " + mGenre); Log.d(TAG, "Album " + mAlbum);
+		 * Log.d(TAG, "ArtworkURL " + mArtworkURL);
+		 */
+		/* No useful ES found */
+		if (mType == TYPE_ALL) {
+			mType = checkMediaType(mLocation);
+		}
+	}
 
-    public String getLocation() {
-        return mLocation;
-    }
+	private void extractTrackInfo(TrackInfo[] tracks) {
+		if (tracks == null)
+			return;
 
-    public void updateMeta() {
+		for (TrackInfo track : tracks) {
+			if (track.Type == TrackInfo.TYPE_VIDEO) {
+				mType = TYPE_VIDEO;
+				mWidth = track.Width;
+				mHeight = track.Height;
+			} else if (mType == TYPE_ALL && track.Type == TrackInfo.TYPE_AUDIO) {
+				mType = TYPE_AUDIO;
+			} else if (track.Type == TrackInfo.TYPE_META) {
+				mLength = track.Length;
+				mTitle = track.Title;
+				mArtist = getValueWrapper(track.Artist,
+						UnknownStringType.Artist);
+				mAlbum = getValueWrapper(track.Album, UnknownStringType.Album);
+				mGenre = getValueWrapper(track.Genre, UnknownStringType.Genre);
+				mArtworkURL = track.ArtworkURL;
+				Log.d(TAG, "Title " + mTitle);
+				Log.d(TAG, "Artist " + mArtist);
+				Log.d(TAG, "Genre " + mGenre);
+				Log.d(TAG, "Album " + mAlbum);
+			}
+		}
 
-    }
+		/* No useful ES found */
+		if (mType == TYPE_ALL) {
+			int dotIndex = mLocation.lastIndexOf(".");
+			if (dotIndex != -1) {
+				String fileExt = mLocation.substring(dotIndex).toLowerCase(
+						Locale.ENGLISH);
+				if (Media.VIDEO_EXTENSIONS.contains(fileExt)) {
+					mType = TYPE_VIDEO;
+				} else if (Media.AUDIO_EXTENSIONS.contains(fileExt)) {
+					mType = TYPE_AUDIO;
+				}
+			}
+		}
+	}
 
-    public String getFileName() {
-        if (mFilename == null) {
-            mFilename = LibVlcUtil.URItoFileName(mLocation);
-        }
-        return mFilename;
-    }
+	public Media(String location, long time, long length, int type,
+			Bitmap picture, String title, String artist, String genre,
+			String album, int width, int height, String artworkURL, int audio,
+			int spu) {
+		mLocation = location;
+		mFilename = null;
+		mTime = time;
+		mAudioTrack = audio;
+		mSpuTrack = spu;
+		mLength = length;
+		mType = type;
+		mPicture = picture;
+		mWidth = width;
+		mHeight = height;
 
-    public long getTime() {
-        return mTime;
-    }
+		mTitle = title;
+		mArtist = getValueWrapper(artist, UnknownStringType.Artist);
+		mGenre = getValueWrapper(genre, UnknownStringType.Genre);
+		mAlbum = getValueWrapper(album, UnknownStringType.Album);
+		mArtworkURL = artworkURL;
+	}
 
-    public void setTime(long time) {
-        mTime = time;
-    }
+	private enum UnknownStringType {
+		Artist, Genre, Album
+	};
 
-    public int getAudioTrack() {
-        return mAudioTrack;
-    }
+	/**
+	 * Uses introspection to read VLC l10n databases, so that we can sever the
+	 * hard-coded dependency gracefully for 3rd party libvlc apps while still
+	 * maintaining good l10n in VLC for Android.
+	 * 
+	 * @see org.videolan.vlc.util.Util#getValue(String, int)
+	 * 
+	 * @param string
+	 *            The default string
+	 * @param type
+	 *            Alias for R.string.xxx
+	 * @return The default string if not empty or string from introspection
+	 */
+	private static String getValueWrapper(String string, UnknownStringType type) {
+		if (string != null && string.length() > 0)
+			return string;
 
-    public void setAudioTrack(int track) {
-        mAudioTrack = track;
-    }
+		try {
+			Class<?> stringClass = Class.forName("org.videolan.vlc.R$string");
+			Class<?> utilClass = Class.forName("org.videolan.vlc.Util");
 
-    public int getSpuTrack() {
-        return mSpuTrack;
-    }
+			Integer value;
+			switch (type) {
+			case Album:
+				value = (Integer) stringClass.getField("unknown_album").get(
+						null);
+				break;
+			case Genre:
+				value = (Integer) stringClass.getField("unknown_genre").get(
+						null);
+				break;
+			case Artist:
+			default:
+				value = (Integer) stringClass.getField("unknown_artist").get(
+						null);
+				break;
+			}
 
-    public void setSpuTrack(int track) {
-        mSpuTrack = track;
-    }
+			Method getValueMethod = utilClass.getDeclaredMethod("getValue",
+					String.class, Integer.TYPE);
+			// Util.getValue(string, R.string.xxx);
+			return (String) getValueMethod.invoke(null, string, value);
+		} catch (ClassNotFoundException e) {
+		} catch (IllegalArgumentException e) {
+		} catch (IllegalAccessException e) {
+		} catch (NoSuchFieldException e) {
+		} catch (NoSuchMethodException e) {
+		} catch (InvocationTargetException e) {
+		}
 
-    public long getLength() {
-        return mLength;
-    }
+		// VLC for Android translations not available (custom app perhaps)
+		// Use hardcoded English phrases.
+		switch (type) {
+		case Album:
+			return "Unknown Album";
+		case Genre:
+			return "Unknown Genre";
+		case Artist:
+		default:
+			return "Unknown Artist";
+		}
+	}
 
-    public int getType() {
-        return mType;
-    }
+	/**
+	 * Compare the filenames to sort items
+	 */
+	@Override
+	public int compareTo(Media another) {
+		return mTitle.toUpperCase(Locale.getDefault()).compareTo(
+				another.getTitle().toUpperCase(Locale.getDefault()));
+	}
 
-    public int getWidth() {
-        return mWidth;
-    }
+	public String getLocation() {
+		return mLocation;
+	}
 
-    public int getHeight() {
-        return mHeight;
-    }
+	public void updateMeta() {
 
-    /**
-     * Returns the raw picture object. Likely to be NULL in VLC for Android
-     * due to lazy-loading.
-     *
-     * Use {@link org.videolan.vlc.util.Bitmap#getPictureFromCache(Media)} instead.
-     *
-     * @return The raw picture or NULL
-     */
-    public Bitmap getPicture() {
-        return mPicture;
-    }
+	}
 
-    /**
-     * Sets the raw picture object.
-     *
-     * In VLC for Android, use {@link org.videolan.vlc.MediaDatabase#setPicture(Media, Bitmap)} instead.
-     *
-     * @param p
-     */
-    public void setPicture(Bitmap p) {
-        mPicture = p;
-    }
+	public String getFileName() {
+		if (mFilename == null) {
+			mFilename = LibVlcUtil.URItoFileName(mLocation);
+		}
+		return mFilename;
+	}
 
-    public boolean isPictureParsed() {
-        return mIsPictureParsed;
-    }
+	public long getTime() {
+		return mTime;
+	}
 
-    public void setPictureParsed(boolean isParsed) {
-        mIsPictureParsed = isParsed;
-    }
+	public void setTime(long time) {
+		mTime = time;
+	}
 
-    public String getTitle() {
-        if (mTitle != null && mType != TYPE_VIDEO)
-            return mTitle;
-        else {
-            String fileName = getFileName();
-            if (fileName == null)
-                return new String();
-            int end = fileName.lastIndexOf(".");
-            if (end <= 0)
-                return fileName;
-            return fileName.substring(0, end);
-        }
-    }
+	public int getAudioTrack() {
+		return mAudioTrack;
+	}
 
-    public String getSubtitle() {
-        return mType != TYPE_VIDEO ? mArtist + " - " + mAlbum : "";
-    }
+	public void setAudioTrack(int track) {
+		mAudioTrack = track;
+	}
 
-    public String getArtist() {
-        return mArtist;
-    }
+	public int getSpuTrack() {
+		return mSpuTrack;
+	}
 
-    public String getGenre() {
-        if(getValueWrapper(null, UnknownStringType.Genre).equals(mGenre))
-            return mGenre;
-        else if( mGenre.length() > 1)/* Make genres case insensitive via normalisation */
-            return Character.toUpperCase(mGenre.charAt(0)) + mGenre.substring(1).toLowerCase(Locale.getDefault());
-        else
-            return mGenre;
-    }
+	public void setSpuTrack(int track) {
+		mSpuTrack = track;
+	}
 
-    public String getCopyright() {
-        return mCopyright;
-    }
+	public long getLength() {
+		return mLength;
+	}
 
-    public String getAlbum() {
-        return mAlbum;
-    }
+	public int getType() {
+		return mType;
+	}
 
-    public String getTrackNumber() {
-        return mTrackNumber;
-    }
+	public int getWidth() {
+		return mWidth;
+	}
 
-    public String getDescription() {
-        return mDescription;
-    }
+	public int getHeight() {
+		return mHeight;
+	}
 
-    public String getRating() {
-        return mRating;
-    }
+	/**
+	 * Returns the raw picture object. Likely to be NULL in VLC for Android due
+	 * to lazy-loading.
+	 * 
+	 * Use {@link org.videolan.vlc.util.Bitmap#getPictureFromCache(Media)}
+	 * instead.
+	 * 
+	 * @return The raw picture or NULL
+	 */
+	public Bitmap getPicture() {
+		return mPicture;
+	}
 
-    public String getDate() {
-        return mDate;
-    }
+	/**
+	 * Sets the raw picture object.
+	 * 
+	 * In VLC for Android, use
+	 * {@link org.videolan.vlc.MediaDatabase#setPicture(Media, Bitmap)} instead.
+	 * 
+	 * @param p
+	 */
+	public void setPicture(Bitmap p) {
+		mPicture = p;
+	}
 
-    public String getSettings() {
-        return mSettings;
-    }
+	public boolean isPictureParsed() {
+		return mIsPictureParsed;
+	}
 
-    public String getNowPlaying() {
-        return mNowPlaying;
-    }
+	public void setPictureParsed(boolean isParsed) {
+		mIsPictureParsed = isParsed;
+	}
 
-    public String getPublisher() {
-        return mPublisher;
-    }
+	public String getTitle() {
+		if (mTitle != null && mType != TYPE_VIDEO)
+			return mTitle;
+		else {
+			String fileName = getFileName();
+			if (fileName == null)
+				return new String();
+			int end = fileName.lastIndexOf(".");
+			if (end <= 0)
+				return fileName;
+			return fileName.substring(0, end);
+		}
+	}
 
-    public String getEncodedBy() {
-        return mEncodedBy;
-    }
+	public String getSubtitle() {
+		return mType != TYPE_VIDEO ? mArtist + " - " + mAlbum : "";
+	}
 
-    public String getTrackID() {
-        return mTrackID;
-    }
+	public String getArtist() {
+		return mArtist;
+	}
 
-    public String getArtworkURL() {
-        return mArtworkURL;
-    }
+	public String getGenre() {
+		if (getValueWrapper(null, UnknownStringType.Genre).equals(mGenre))
+			return mGenre;
+		else if (mGenre.length() > 1)/*
+									 * Make genres case insensitive via
+									 * normalisation
+									 */
+			return Character.toUpperCase(mGenre.charAt(0))
+					+ mGenre.substring(1).toLowerCase(Locale.getDefault());
+		else
+			return mGenre;
+	}
+
+	public String getCopyright() {
+		return mCopyright;
+	}
+
+	public String getAlbum() {
+		return mAlbum;
+	}
+
+	public String getTrackNumber() {
+		return mTrackNumber;
+	}
+
+	public String getDescription() {
+		return mDescription;
+	}
+
+	public String getRating() {
+		return mRating;
+	}
+
+	public String getDate() {
+		return mDate;
+	}
+
+	public String getSettings() {
+		return mSettings;
+	}
+
+	public String getNowPlaying() {
+		return mNowPlaying;
+	}
+
+	public String getPublisher() {
+		return mPublisher;
+	}
+
+	public String getEncodedBy() {
+		return mEncodedBy;
+	}
+
+	public String getTrackID() {
+		return mTrackID;
+	}
+
+	public String getArtworkURL() {
+		return mArtworkURL;
+	}
 }

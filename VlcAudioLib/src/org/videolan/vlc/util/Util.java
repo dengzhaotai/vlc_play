@@ -93,4 +93,8 @@ public class Util {
 		a.recycle();
 		return resId;
 	}
+
+	public static String getStringN(Context context, int defaultId) {
+		return context.getString(defaultId);
+	}
 }

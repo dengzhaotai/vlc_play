@@ -25,6 +25,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.videolan.libvlc.Media;
 import org.videolan.vlc.audio.RepeatType;
 import org.videolan.vlc.interfaces.IAudioPlayer;
 import org.videolan.vlc.interfaces.IAudioPlayerControl;
@@ -32,7 +33,6 @@ import org.videolan.vlc.interfaces.IAudioService;
 import org.videolan.vlc.interfaces.IAudioServiceCallback;
 
 import com.dzt.musicplay.constant.GlobalConstants;
-import org.videolan.vlc.audio.MusicInfo;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -572,15 +572,14 @@ public class AudioServiceController implements IAudioPlayerControl {
 
 	public void loadMediaList(String mediaPath, boolean libvlcBacked,
 			boolean noVideo) {
-		ArrayList<MusicInfo> arrayList = new ArrayList<MusicInfo>();
-		MusicInfo tmp = new MusicInfo(mediaPath, false);
+		ArrayList<Media> arrayList = new ArrayList<Media>();
+		Media tmp = new Media(mediaPath, false);
 		arrayList.add(tmp);
 		GlobalConstants.print_i(getClass(), "loadMediaList----------------2");
 		loadMediaList(arrayList, 0, libvlcBacked, noVideo);
 	}
 
-	public void loadMediaList(
-			List<org.videolan.vlc.audio.MusicInfo> mediaPathList, int position,
+	public void loadMediaList(List<Media> mediaPathList, int position,
 			boolean libvlcBacked, boolean noVideo) {
 		if (mediaPathList.size() <= 0)
 			return;
@@ -595,8 +594,7 @@ public class AudioServiceController implements IAudioPlayerControl {
 	}
 
 	@Override
-	public void loadMediaList(
-			List<MusicInfo> mediaPathList, int position) {
+	public void loadMediaList(List<Media> mediaPathList, int position) {
 		// TODO Auto-generated method stub
 		loadMediaList(mediaPathList, position, false, false);
 	}

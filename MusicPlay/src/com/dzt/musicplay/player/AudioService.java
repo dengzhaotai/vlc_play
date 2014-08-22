@@ -151,8 +151,8 @@ public class AudioService extends Service {
 	private ComponentName mRemoteControlClientReceiverComponent;
 
 	// add by dzt 2014.08.09
-	private ArrayList<MusicInfo> mMediaList;
-	private MusicInfo mCurrentMedia;
+	private ArrayList<Media> mMediaList;
+	private Media mCurrentMedia;
 	private boolean mLibVLCPlaylistActive = false;
 
 	@Override
@@ -168,7 +168,7 @@ public class AudioService extends Service {
 		StartLoadFileThread();
 
 		mCallback = new HashMap<IAudioServiceCallback, Integer>();
-		mMediaList = new ArrayList<MusicInfo>();
+		mMediaList = new ArrayList<Media>();
 		mCurrentIndex = -1;
 		mPrevIndex = -1;
 		mNextIndex = -1;
@@ -832,13 +832,16 @@ public class AudioService extends Service {
 		setUpRemoteControlClient();
 		mHandler.removeMessages(SHOW_PROGRESS);
 		// hideNotification(); <-- see event handler
-		mLibVLC.pause();
+		// mLibVLC.pause();
+		if (mLibVLC.isPlaying())
+			mLibVLC.customizePause();
 	}
 
 	private void play() {
 		if (hasCurrentMedia()) {
 			setUpRemoteControlClient();
-			mLibVLC.play();
+			// mLibVLC.play();
+			mLibVLC.customizePlay();
 			mHandler.sendEmptyMessage(SHOW_PROGRESS);
 			showNotification();
 			updateWidget(this);
@@ -1419,9 +1422,9 @@ public class AudioService extends Service {
 			mMediaList.clear();
 			mPrevious.clear();
 
-			ArrayList<MusicInfo> tmp = AudioPlayingList.getInstance()
+			ArrayList<Media> tmp = AudioPlayingList.getInstance()
 					.GetServicePlayList();
-			for (MusicInfo f : tmp)
+			for (Media f : tmp)
 				mMediaList.add(f);
 
 			Log.d("fbh", "E/ add cost :" + System.currentTimeMillis());
@@ -1434,7 +1437,7 @@ public class AudioService extends Service {
 				if (mLibVLCPlaylistActive) {
 					playIndex(position);
 				} else {
-					readMedia(mCurrentMedia.getUrlPath(), noVideo);
+					readMedia(mCurrentMedia.getLocation(), noVideo);
 				}
 				Log.d("fbh", "E/ loadMediaList load read cost :");
 				setUpRemoteControlClient();

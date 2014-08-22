@@ -69,7 +69,7 @@
             android:background="@color/transparent"
             android:contentDescription="@string/content_description"
             android:paddingRight="20dp"
-            android:src="@drawable/bottom_stop_selector" />
+            android:src="@drawable/bottom_play_selector" />
     </RelativeLayout>
 
 </LinearLayout>

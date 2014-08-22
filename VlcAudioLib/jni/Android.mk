@@ -1,6 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
+
 LOCAL_MODULE    := libvlcjni
 
 LOCAL_SRC_FILES := libvlcjni.c libvlcjni-util.c libvlcjni-track.c libvlcjni-medialist.c aout.c vout.c libvlcjni-equalizer.c native_crash_handler.c

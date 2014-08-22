@@ -1,12 +1,16 @@
 package com.dzt.musicplay.list;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
+import org.videolan.libvlc.Media;
+import org.videolan.vlc.MediaLibrary;
 import org.videolan.vlc.interfaces.IAudioPlayer;
-import org.videolan.vlc.audio.MusicInfo;
+import org.videolan.vlc.util.Strings;
+import org.videolan.vlc.util.Util;
+
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,26 +19,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.dzt.musicplay.R;
 import com.dzt.musicplay.WeakHandler;
 import com.dzt.musicplay.constant.GlobalConstants;
+import com.dzt.musicplay.constant.GlobalVariables;
+import com.dzt.musicplay.list.AudioBrowserListAdapter.ListItem;
 import com.dzt.musicplay.player.AudioServiceController;
-import com.dzt.musicplay.utils.MediaUtils;
-import com.dzt.vlcaudiolib.VlcAndroidLib;
 
 public class SongFragment extends Fragment implements IAudioPlayer {
 
 	private View mSongView;
 	private ListView mLv = null;
-	private SongAdapter mAdapter = null;
+	private AudioBrowserListAdapter mSongsAdapter;
 	private List<HashMap<String, String>> mList = null;
-	List<MusicInfo> mAudioList = new ArrayList<MusicInfo>();
 
 	private AudioServiceController mAudioController = null;
 	private onChangePlayListener listener = null;
+	private MediaLibrary mMediaLibrary;
+	private int mFlingViewPosition = 0;
 
 	public interface onChangePlayListener {
 		public void onChangePlay(String singer, String url);
@@ -49,10 +55,13 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		mAudioController = AudioServiceController.getInstance();
+		mMediaLibrary = MediaLibrary.getInstance(getActivity());
 		initWidgets();
 		mList = new ArrayList<HashMap<String, String>>();
-		mAdapter = new SongAdapter(mList, getActivity());
-		mLv.setAdapter(mAdapter);
+		// 创建歌曲列表的适配器
+		mSongsAdapter = new AudioBrowserListAdapter(getActivity(),
+				AudioBrowserListAdapter.ITEM_WITH_COVER);
+
 		GlobalConstants.print_i(getClass(), "onCreate");
 		mLv.setOnItemClickListener(new OnItemClickListener() {
 
@@ -61,8 +70,11 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				String singer = mList.get(position).get("Artist");
-				String name = mList.get(position).get("displayName");
+				ListItem item = mSongsAdapter.getItem(position);
+				GlobalVariables.mCurrPos = position + 1;
+				String singer = item.mSubTitle;
+				String name = item.mTitle;
+
 				GlobalConstants.print_i(getClass(),
 						"onItemClick----->position = " + position + " url = "
 								+ name);
@@ -73,21 +85,38 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 			}
 
 		});
-		searchThread.start();
-		// searchHandler.sendEmptyMessageDelayed(2, 1000);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		mLv.setAdapter(mSongsAdapter);
 		return mSongView;
+	}
+
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		mAudioController.addAudioPlayer(this);
+		searchFile();
+		mMediaLibrary.addUpdateHandler(searchHandler);
+	}
+
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		mMediaLibrary.removeUpdateHandler(searchHandler);
+		mAudioController.removeAudioPlayer(this);
 	}
 
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
 		GlobalConstants.print_i(getClass(), "onDestroy");
+		mSongsAdapter.clear();
 		super.onDestroy();
 	}
 
@@ -100,20 +129,28 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 	}
 
 	private void searchFile() {
-		List<MusicInfo> list = MediaUtils.getMp3Infos(getActivity());
-		for (Iterator<MusicInfo> it = list.iterator(); it.hasNext();) {
-			MusicInfo info = it.next();
-			// GlobalConstants.print_i(getClass(), info.toString());
-			mList.add(MediaUtils.getMusicMap(info));
+		List<Media> audioList = MediaLibrary.getInstance(getActivity())
+				.getAudioItems();
+
+		if (audioList.isEmpty())
+			GlobalConstants.print_i(getClass(),
+					"searchFile----->audioList is null ");
+		else
+			GlobalConstants.print_i(getClass(),
+					"searchFile----->audioList is not null");
+
+		mSongsAdapter.clear();
+
+		Collections.sort(audioList, MediaComparators.byName);
+		for (int i = 0; i < audioList.size(); i++) {
+			Media media = audioList.get(i);
+			mSongsAdapter.add(media.getTitle(), media.getArtist(), media);
 		}
-		// mList = MediaUtils.getMusicMaps(list);
+		mSongsAdapter.addScrollSections();
+		mSongsAdapter.notifyDataSetChanged();
+
 		GlobalConstants.print_i(getClass(), "size = " + mList.size());
 		searchHandler.sendEmptyMessageDelayed(1, 500);
-	}
-
-	private void updateList() {
-		mAudioList = MediaUtils.getMp3Infos(getActivity());
-		mAdapter.notifyDataSetChanged();
 	}
 
 	AudioServiceConnectHandler hConnect = null;
@@ -141,6 +178,7 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 
 	private void playAudio(int pos) {
 		GlobalConstants.print_i(getClass(), "playAudio");
+		List<Media> medias = mSongsAdapter.getItems();
 		if (!mAudioController.IsConnected()) {
 			GlobalConstants.print_i(getClass(), "playAudio Is not Connected");
 			if (hConnect == null)
@@ -149,18 +187,11 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 			hConnect.SetPosition(pos);
 			return;
 		}
-		mAudioController.loadMediaList(mAudioList, pos);
-		// String tmp = mAudioController.getItem();
-		// if (tmp == null) {
-		// mAudioController.loadMediaList(mAudioList, pos);
-		// } else {
-		// if (tmp.compareToIgnoreCase(mAudioList.get(pos).getUrlPath()) != 0) {
-		// mAudioController.loadMediaList(mAudioList, pos);
-		// }
-		// }
+		ArrayList<String> mediaLocation = mSongsAdapter.getLocations(pos);
+		System.out.println("-------------------------------------songListener");
+		mAudioController.load(mediaLocation, 0);
 
-		// AudioServiceController.getInstance().bindAudioService(getActivity());
-		// mAudioController.addAudioPlayer(this);
+		// mAudioController.loadMediaList(medias, pos);
 		GlobalConstants.print_i(getClass(), "playAudio----end tmp = ");
 	}
 
@@ -180,11 +211,13 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 			if (owner == null)
 				return;
 			switch (msg.what) {
-			case 0:
+			case MediaLibrary.MEDIA_ITEMS_UPDATED:
+				GlobalConstants.print_i(getClass(),
+						"SearchHandler----------MEDIA_ITEMS_UPDATED");
 				owner.searchFile();
 				break;
 			case 1:
-				owner.updateList();
+				// owner.updateList();
 				break;
 			case 2:
 				// owner.play();
@@ -194,42 +227,60 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 		}
 	}
 
-	private void play() {
-		GlobalConstants.print_i(getClass(), "play ----------");
-		VlcAndroidLib.init(getActivity());
-		VlcAndroidLib.init(getActivity());
-		if (VlcAndroidLib.getInstance() != null) {
-			GlobalConstants.print_i(getClass(), "play mVlcLib != null");
-			VlcAndroidLib.getInstance().readFile(getActivity(),
-					"/mnt/flash/Music/爱与痛的边缘.mp3");
-
-			VlcAndroidLib.getInstance().play(getActivity());
+	@Override
+	public synchronized void update() {
+		// TODO Auto-generated method stub
+		System.out.println("------------------------update");
+		if (mAudioController == null)
+			return;
+		if (mAudioController.isShuffling()) {
+			// mShuffle.setImageResource(Util.getResourceFromAttribute(act,
+			// R.attr.ic_shuffle_pressed));
+			System.out.println("------------------------update1");
 		} else {
-			GlobalConstants.print_i(getClass(), "play mVlcLib == null");
+			// mShuffle.setImageResource(Util.getResourceFromAttribute(act,
+			// R.attr.ic_shuffle_normal));
+			System.out.println("------------------------update2");
 		}
-	}
-
-	private Thread searchThread = new Thread(new SearchThread());
-
-	private class SearchThread implements Runnable {
-
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			searchHandler.sendEmptyMessage(0);
+		switch (mAudioController.getRepeatType()) {
+		case None:
+			// mRepeat.setImageResource(Util.getResourceFromAttribute(act,
+			// R.attr.ic_repeat_normal));
+			System.out.println("------------------------update3");
+			break;
+		case Once:
+			// mRepeat.setImageResource(Util.getResourceFromAttribute(act,
+			// R.attr.ic_repeat_one));
+			System.out.println("------------------------update4");
+			break;
+		default:
+		case All:
+			// mRepeat.setImageResource(Util.getResourceFromAttribute(act,
+			// R.attr.ic_repeat_pressed));
+			System.out.println("------------------------update5");
+			break;
 		}
+		// if (mAudioController.hasNext())
+		// mNext.setVisibility(ImageButton.VISIBLE);
+		// else
+		// mNext.setVisibility(ImageButton.INVISIBLE);
+		// if (mAudioController.hasPrevious())
+		// mPrevious.setVisibility(ImageButton.VISIBLE);
+		// else
+		// mPrevious.setVisibility(ImageButton.INVISIBLE);
+		// mTimeline.setOnSeekBarChangeListener(mTimelineListner);
+
+		// updateList();
 	}
 
 	@Override
-	public void update() {
+	public synchronized void updateProgress() {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void updateProgress() {
-		// TODO Auto-generated method stub
-
+		int time = mAudioController.getTime();
+		int length = mAudioController.getLength();
+		System.out.println("------updateProgress time = "
+				+ Strings.millisToString(time) + " length = "
+				+ Strings.millisToString(length));
 	}
 
 }
