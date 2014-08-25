@@ -13,6 +13,8 @@ import android.widget.ImageView;
 
 import com.dzt.musicplay.R;
 import com.dzt.musicplay.ViewPagerAdapter;
+import com.dzt.musicplay.list.SongFragment;
+import com.dzt.musicplay.list.SongFragment.onUpdateProgressListener;
 import com.dzt.musicplay.widgets.CustomViewPager;
 
 public class PlayerActivity extends Activity implements OnClickListener {

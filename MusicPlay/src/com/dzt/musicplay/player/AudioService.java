@@ -55,6 +55,7 @@ import org.videolan.vlc.util.VLCInstance;
 import org.videolan.vlc.util.WeakHandler;
 
 import android.annotation.TargetApi;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -80,13 +81,17 @@ import android.os.PowerManager;
 import android.os.Process;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.dzt.musicplay.MusicPlayActivity;
 import com.dzt.musicplay.constant.GlobalConstants;
-import org.videolan.vlc.audio.MusicInfo;
 import com.dzt.vlcaudiolib.R;
+
+import org.videolan.vlc.audio.MusicInfo;
 
 public class AudioService extends Service {
 
@@ -213,7 +218,6 @@ public class AudioService extends Service {
 			mRemoteControlClientReceiver = new RemoteControlClientReceiver();
 			registerReceiver(mRemoteControlClientReceiver, filter);
 		}
-		AudioUtil.prepareCacheFolder(this);
 		GlobalConstants.print_i(getClass(), "onCreate----end");
 	}
 
@@ -298,6 +302,7 @@ public class AudioService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		System.out.println("AudioService------------------>onDestroy");
 		stop();
 		if (mWakeLock.isHeld())
 			mWakeLock.release();
@@ -572,6 +577,8 @@ public class AudioService extends Service {
 				index = msg.getData().getInt("item_index");
 				if (service.mCurrentIndex == index && !expanding) {
 					// The current item has been deleted
+					System.out
+							.println("AudioService------------------>handleMessage--CustomMediaListItemDeleted");
 					service.mCurrentIndex--;
 					service.determinePrevAndNextIndices();
 					if (service.mNextIndex != -1)
@@ -719,95 +726,97 @@ public class AudioService extends Service {
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private void showNotification() {
 		Constant.print_i("AudioService----------->showNotification");
-		// try {
-		// Media media = getCurrentMedia();
-		// if (media == null)
-		// return;
-		// Bitmap cover = AudioUtil.getCover(this, media, 64);
-		// String title = media.getTitle();
-		// String artist = media.getArtist();
-		// String album = media.getAlbum();
-		// Notification notification;
-		//
-		// // add notification to status bar
-		// NotificationCompat.Builder builder = new NotificationCompat.Builder(
-		// this).setSmallIcon(R.drawable.ic_stat_vlc)
-		// .setTicker(title + " - " + artist).setAutoCancel(false)
-		// .setOngoing(true);
-		//
-		// Intent notificationIntent = new Intent(this, MainActivity.class);
-		// notificationIntent.setAction(MainActivity.ACTION_SHOW_PLAYER);
-		// notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-		// notificationIntent.putExtra(START_FROM_NOTIFICATION, true);
-		// PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-		// notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		//
-		// if (LibVlcUtil.isJellyBeanOrLater()) {
-		// Intent iBackward = new Intent(ACTION_REMOTE_BACKWARD);
-		// Intent iPlay = new Intent(ACTION_REMOTE_PLAYPAUSE);
-		// Intent iForward = new Intent(ACTION_REMOTE_FORWARD);
-		// Intent iStop = new Intent(ACTION_REMOTE_STOP);
-		// PendingIntent piBackward = PendingIntent.getBroadcast(this, 0,
-		// iBackward, PendingIntent.FLAG_UPDATE_CURRENT);
-		// PendingIntent piPlay = PendingIntent.getBroadcast(this, 0,
-		// iPlay, PendingIntent.FLAG_UPDATE_CURRENT);
-		// PendingIntent piForward = PendingIntent.getBroadcast(this, 0,
-		// iForward, PendingIntent.FLAG_UPDATE_CURRENT);
-		// PendingIntent piStop = PendingIntent.getBroadcast(this, 0,
-		// iStop, PendingIntent.FLAG_UPDATE_CURRENT);
-		//
-		// RemoteViews view = new RemoteViews(getPackageName(),
-		// R.layout.notification);
-		// if (cover != null)
-		// view.setImageViewBitmap(R.id.cover, cover);
-		// view.setTextViewText(R.id.songName, title);
-		// view.setTextViewText(R.id.artist, artist);
-		// view.setImageViewResource(R.id.play_pause,
-		// mLibVLC.isPlaying() ? R.drawable.ic_pause_w
-		// : R.drawable.ic_play_w);
-		// view.setOnClickPendingIntent(R.id.play_pause, piPlay);
-		// view.setOnClickPendingIntent(R.id.forward, piForward);
-		// view.setOnClickPendingIntent(R.id.stop, piStop);
-		// view.setOnClickPendingIntent(R.id.content, pendingIntent);
-		//
-		// RemoteViews view_expanded = new RemoteViews(getPackageName(),
-		// R.layout.notification_expanded);
-		// if (cover != null)
-		// view_expanded.setImageViewBitmap(R.id.cover, cover);
-		// view_expanded.setTextViewText(R.id.songName, title);
-		// view_expanded.setTextViewText(R.id.artist, artist);
-		// view_expanded.setTextViewText(R.id.album, album);
-		// view_expanded.setImageViewResource(R.id.play_pause, mLibVLC
-		// .isPlaying() ? R.drawable.ic_pause_w
-		// : R.drawable.ic_play_w);
-		// view_expanded
-		// .setOnClickPendingIntent(R.id.backward, piBackward);
-		// view_expanded.setOnClickPendingIntent(R.id.play_pause, piPlay);
-		// view_expanded.setOnClickPendingIntent(R.id.forward, piForward);
-		// view_expanded.setOnClickPendingIntent(R.id.stop, piStop);
-		// view_expanded.setOnClickPendingIntent(R.id.content,
-		// pendingIntent);
-		//
-		// notification = builder.build();
-		// notification.contentView = view;
-		// notification.bigContentView = view_expanded;
-		// } else {
-		// builder.setLargeIcon(cover)
-		// .setContentTitle(title)
-		// .setContentText(
-		// LibVlcUtil.isJellyBeanOrLater() ? artist
-		// : media.getSubtitle())
-		// .setContentInfo(album).setContentIntent(pendingIntent);
-		// notification = builder.build();
-		// }
-		//
-		// startService(new Intent(this, AudioService.class));
-		// startForeground(3, notification);
-		// } catch (NoSuchMethodError e) {
-		// // Compat library is wrong on 3.2
-		// // http://code.google.com/p/android/issues/detail?id=36359
-		// // http://code.google.com/p/android/issues/detail?id=36502
-		// }
+		try {
+			Media media = getCurrentMedia();
+			if (media == null)
+				return;
+			Bitmap cover = AudioUtil.getCover(this, media, 64);
+			String title = media.getTitle();
+			String artist = media.getArtist();
+			String album = media.getAlbum();
+			Notification notification;
+
+			// add notification to status bar
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(
+					this).setSmallIcon(R.drawable.icon_music)
+					.setTicker(title + " - " + artist).setAutoCancel(false)
+					.setOngoing(true);
+
+			//点击会启动相应的Activity
+			Intent notificationIntent = new Intent(this,
+					MusicPlayActivity.class);
+			notificationIntent.setAction(MusicPlayActivity.ACTION_SHOW_PLAYER);
+			notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+			notificationIntent.putExtra(START_FROM_NOTIFICATION, true);
+			PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+					notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+			if (LibVlcUtil.isJellyBeanOrLater()) {
+				Intent iBackward = new Intent(ACTION_REMOTE_BACKWARD);
+				Intent iPlay = new Intent(ACTION_REMOTE_PLAYPAUSE);
+				Intent iForward = new Intent(ACTION_REMOTE_FORWARD);
+				Intent iStop = new Intent(ACTION_REMOTE_STOP);
+				PendingIntent piBackward = PendingIntent.getBroadcast(this, 0,
+						iBackward, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent piPlay = PendingIntent.getBroadcast(this, 0,
+						iPlay, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent piForward = PendingIntent.getBroadcast(this, 0,
+						iForward, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent piStop = PendingIntent.getBroadcast(this, 0,
+						iStop, PendingIntent.FLAG_UPDATE_CURRENT);
+
+				RemoteViews view = new RemoteViews(getPackageName(),
+						R.layout.notification);
+				if (cover != null)
+					view.setImageViewBitmap(R.id.cover, cover);
+				view.setTextViewText(R.id.songName, title);
+				view.setTextViewText(R.id.artist, artist);
+				view.setImageViewResource(R.id.play_pause,
+						mLibVLC.isPlaying() ? R.drawable.ic_pause_w
+								: R.drawable.ic_play_w);
+				view.setOnClickPendingIntent(R.id.play_pause, piPlay);
+				view.setOnClickPendingIntent(R.id.forward, piForward);
+				view.setOnClickPendingIntent(R.id.stop, piStop);
+				view.setOnClickPendingIntent(R.id.content, pendingIntent);
+
+				RemoteViews view_expanded = new RemoteViews(getPackageName(),
+						R.layout.notification_expanded);
+				if (cover != null)
+					view_expanded.setImageViewBitmap(R.id.cover, cover);
+				view_expanded.setTextViewText(R.id.songName, title);
+				view_expanded.setTextViewText(R.id.artist, artist);
+				view_expanded.setTextViewText(R.id.album, album);
+				view_expanded.setImageViewResource(R.id.play_pause, mLibVLC
+						.isPlaying() ? R.drawable.ic_pause_w
+						: R.drawable.ic_play_w);
+				view_expanded
+						.setOnClickPendingIntent(R.id.backward, piBackward);
+				view_expanded.setOnClickPendingIntent(R.id.play_pause, piPlay);
+				view_expanded.setOnClickPendingIntent(R.id.forward, piForward);
+				view_expanded.setOnClickPendingIntent(R.id.stop, piStop);
+				view_expanded.setOnClickPendingIntent(R.id.content,
+						pendingIntent);
+
+				notification = builder.build();
+				notification.contentView = view;
+				notification.bigContentView = view_expanded;
+			} else {
+				builder.setLargeIcon(cover)
+						.setContentTitle(title)
+						.setContentText(
+								LibVlcUtil.isJellyBeanOrLater() ? artist
+										: media.getSubtitle())
+						.setContentInfo(album).setContentIntent(pendingIntent);
+				notification = builder.build();
+			}
+
+			startService(new Intent(this, AudioService.class));
+			startForeground(3, notification);
+		} catch (NoSuchMethodError e) {
+			// Compat library is wrong on 3.2
+			// http://code.google.com/p/android/issues/detail?id=36359
+			// http://code.google.com/p/android/issues/detail?id=36502
+		}
 		Constant.print_i("AudioService----------->showNotification----end");
 	}
 
@@ -829,6 +838,7 @@ public class AudioService extends Service {
 	}
 
 	private void pause() {
+		System.out.println("AudioService------------------>pause");
 		setUpRemoteControlClient();
 		mHandler.removeMessages(SHOW_PROGRESS);
 		// hideNotification(); <-- see event handler
@@ -838,6 +848,7 @@ public class AudioService extends Service {
 	}
 
 	private void play() {
+		System.out.println("AudioService------------------>play");
 		if (hasCurrentMedia()) {
 			setUpRemoteControlClient();
 			// mLibVLC.play();
@@ -849,6 +860,7 @@ public class AudioService extends Service {
 	}
 
 	private void stop() {
+		System.out.println("AudioService------------------>stop");
 		mLibVLC.stop();
 		mEventHandler.removeHandler(mVlcEventHandler);
 		mLibVLC.getMediaList().getEventHandler()

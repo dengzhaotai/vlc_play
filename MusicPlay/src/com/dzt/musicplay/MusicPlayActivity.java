@@ -10,10 +10,14 @@ import org.videolan.vlc.util.VLCInstance;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -33,6 +37,11 @@ import com.dzt.musicplay.widgets.CustomViewPager;
 
 public class MusicPlayActivity extends Activity implements
 		onChangePlayListener, OnClickListener, onUpdateProgressListener {
+
+	protected static final String ACTION_SHOW_PROGRESSBAR = "org.videolan.vlc.gui.ShowProgressBar";
+	protected static final String ACTION_HIDE_PROGRESSBAR = "org.videolan.vlc.gui.HideProgressBar";
+	protected static final String ACTION_SHOW_TEXTINFO = "org.videolan.vlc.gui.ShowTextInfo";
+	public static final String ACTION_SHOW_PLAYER = "org.videolan.vlc.gui.ShowPlayer";
 
 	private static final int TAB_INDEX0 = 0;
 	private static final int TAB_INDEX1 = 1;
@@ -84,7 +93,8 @@ public class MusicPlayActivity extends Activity implements
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		mAudioController.bindAudioService(this);
+		mAudioController.addAudioPlayer(mSongFragment);
+		AudioServiceController.getInstance().bindAudioService(this);
 		/*
 		 * FIXME: this is used to avoid having MainActivity twice in the
 		 * backstack
@@ -107,7 +117,15 @@ public class MusicPlayActivity extends Activity implements
 				.isWorking();
 		/* Stop scanning for files */
 		MediaLibrary.getInstance(getApplicationContext()).stop();
-		mAudioController.unbindAudioService(this);
+		mAudioController.removeAudioPlayer(mSongFragment);
+		AudioServiceController.getInstance().unbindAudioService(this);
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+
 	}
 
 	private void initViewPager() {
@@ -239,9 +257,53 @@ public class MusicPlayActivity extends Activity implements
 	@Override
 	public void onUpdateProgress(int time, int length) {
 		// TODO Auto-generated method stub
+		System.out.println("onUpdateProgress time = " + time + " length = "
+				+ length);
 		if (time == 0) {
 			mPBar.setMax(length);
 		}
 		mPBar.setProgress(time);
 	}
+
+	private final BroadcastReceiver messageReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			String action = intent.getAction();
+
+			if (action.equalsIgnoreCase(ACTION_SHOW_PROGRESSBAR)) {
+				// setSupportProgressBarIndeterminateVisibility(true);
+				// getWindow().addFlags(
+				// WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			} else if (action.equalsIgnoreCase(ACTION_HIDE_PROGRESSBAR)) {
+				// setSupportProgressBarIndeterminateVisibility(false);
+				// getWindow().clearFlags(
+				// WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+			} else if (action.equalsIgnoreCase(ACTION_SHOW_TEXTINFO)) {
+				// String info = intent.getStringExtra("info");
+				// int max = intent.getIntExtra("max", 0);
+				// int progress = intent.getIntExtra("progress", 100);
+				// mInfoText.setText(info);
+				// mInfoProgress.setMax(max);
+				// mInfoProgress.setProgress(progress);
+				//
+				// if (info == null) {
+				// /* Cancel any upcoming visibility change */
+				// mHandler.removeMessages(ACTIVITY_SHOW_INFOLAYOUT);
+				// mInfoLayout.setVisibility(View.GONE);
+				// } else {
+				// /*
+				// * Slightly delay the appearance of the progress bar to
+				// * avoid unnecessary flickering
+				// */
+				// if (!mHandler.hasMessages(ACTIVITY_SHOW_INFOLAYOUT)) {
+				// Message m = new Message();
+				// m.what = ACTIVITY_SHOW_INFOLAYOUT;
+				// mHandler.sendMessageDelayed(m, 300);
+				// }
+				// }
+			} else if (action.equalsIgnoreCase(ACTION_SHOW_PLAYER)) {
+				// showAudioPlayer();
+			}
+		}
+	};
 }

@@ -125,7 +125,9 @@ public class AudioServiceController implements IAudioPlayerControl {
 		}
 		GlobalConstants.print_i(getClass(), "bindAudioService");
 		context = context.getApplicationContext();
-
+		System.out
+				.println("AudioServiceController--------->bindAudioService mIsBound = "
+						+ mIsBound);
 		if (!mIsBound) {
 			GlobalConstants.print_i(getClass(),
 					"bindAudioService mIsBound = false");
@@ -203,7 +205,9 @@ public class AudioServiceController implements IAudioPlayerControl {
 			return;
 		}
 		context = context.getApplicationContext();
-
+		System.out
+				.println("AudioServiceController--------->unbindAudioService mIsBound = "
+						+ mIsBound);
 		if (mIsBound) {
 			mIsBound = false;
 			try {
@@ -367,6 +371,7 @@ public class AudioServiceController implements IAudioPlayerControl {
 	}
 
 	public void stop() {
+		GlobalConstants.print_i(getClass(), "stop");
 		remoteProcedureCall(mAudioServiceBinder, Void.class, (Void) null,
 				"stop", null, null);
 		updateAudioPlayer();
@@ -436,6 +441,7 @@ public class AudioServiceController implements IAudioPlayerControl {
 
 	@Override
 	public void pause() {
+		GlobalConstants.print_i(getClass(), "pause");
 		remoteProcedureCall(mAudioServiceBinder, Void.class, (Void) null,
 				"pause", null, null);
 		updateAudioPlayer();
@@ -443,6 +449,7 @@ public class AudioServiceController implements IAudioPlayerControl {
 
 	@Override
 	public void play() {
+		GlobalConstants.print_i(getClass(), "play");
 		remoteProcedureCall(mAudioServiceBinder, Void.class, (Void) null,
 				"play", null, null);
 		updateAudioPlayer();
@@ -492,6 +499,7 @@ public class AudioServiceController implements IAudioPlayerControl {
 
 	@Override
 	public void previous() {
+		GlobalConstants.print_i(getClass(), "play");
 		remoteProcedureCall(mAudioServiceBinder, Void.class, (Void) null,
 				"previous", null, null);
 	}

@@ -2,6 +2,9 @@ package com.dzt.musicplay;
 
 import java.util.Locale;
 
+import org.videolan.vlc.MediaDatabase;
+import org.videolan.vlc.util.AudioUtil;
+
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -56,6 +59,8 @@ public class MusicPlayApp extends Application {
 			getBaseContext().getResources().updateConfiguration(config,
 					getBaseContext().getResources().getDisplayMetrics());
 		}
+		MediaDatabase.getInstance(getApplicationContext());
+		AudioUtil.prepareCacheFolder(this);
 		GlobalConstants.print_i(getClass(), "onCreate");
 	}
 
