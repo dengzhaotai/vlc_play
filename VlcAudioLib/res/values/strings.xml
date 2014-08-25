@@ -2,6 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Main VLC Interface -->
+    <string name="content_description">contentDescription</string>
     <string name="app_name" translatable="false">Player</string>
     <string name="widget_name" translatable="false">Music Player</string>
     <string name="app_sd">SD</string>
