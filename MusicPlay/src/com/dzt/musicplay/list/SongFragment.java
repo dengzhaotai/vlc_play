@@ -11,6 +11,7 @@ import org.videolan.vlc.interfaces.IAudioPlayer;
 import org.videolan.vlc.util.Strings;
 import org.videolan.vlc.util.Util;
 
+import android.R.interpolator;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,6 +40,7 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 
 	private AudioServiceController mAudioController = null;
 	private onChangePlayListener listener = null;
+	private onUpdateProgressListener updateListener = null;
 	private MediaLibrary mMediaLibrary;
 	private int mFlingViewPosition = 0;
 
@@ -48,6 +50,14 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 
 	public void setOnChangePlayListener(onChangePlayListener listener) {
 		this.listener = listener;
+	}
+
+	public interface onUpdateProgressListener {
+		public void onUpdateProgress(int time, int length);
+	}
+
+	public void setOnUpdateProgresListener(onUpdateProgressListener listener) {
+		updateListener = listener;
 	}
 
 	@Override
@@ -260,15 +270,16 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 			System.out.println("------------------------update5");
 			break;
 		}
-		// if (mAudioController.hasNext())
-		// mNext.setVisibility(ImageButton.VISIBLE);
-		// else
-		// mNext.setVisibility(ImageButton.INVISIBLE);
-		// if (mAudioController.hasPrevious())
-		// mPrevious.setVisibility(ImageButton.VISIBLE);
-		// else
-		// mPrevious.setVisibility(ImageButton.INVISIBLE);
-		// mTimeline.setOnSeekBarChangeListener(mTimelineListner);
+		if (mAudioController.hasNext()) {
+			System.out.println("------------------------update6");
+		} else {
+			System.out.println("------------------------update7");
+		}
+		if (mAudioController.hasPrevious()) {
+			System.out.println("------------------------update8");
+		} else {
+			System.out.println("------------------------update9");
+		}
 
 		// updateList();
 	}
@@ -278,9 +289,8 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 		// TODO Auto-generated method stub
 		int time = mAudioController.getTime();
 		int length = mAudioController.getLength();
-		System.out.println("------updateProgress time = "
-				+ Strings.millisToString(time) + " length = "
-				+ Strings.millisToString(length));
+		if (updateListener != null)
+			updateListener.onUpdateProgress(time, length);
 	}
 
 }

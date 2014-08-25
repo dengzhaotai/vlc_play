@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,13 +25,14 @@ import com.dzt.musicplay.constant.GlobalConstants;
 import com.dzt.musicplay.list.SingerFragment;
 import com.dzt.musicplay.list.SongFragment;
 import com.dzt.musicplay.list.SongFragment.onChangePlayListener;
+import com.dzt.musicplay.list.SongFragment.onUpdateProgressListener;
 import com.dzt.musicplay.player.AudioService;
 import com.dzt.musicplay.player.AudioServiceController;
 import com.dzt.musicplay.player.PlayerActivity;
 import com.dzt.musicplay.widgets.CustomViewPager;
 
 public class MusicPlayActivity extends Activity implements
-		onChangePlayListener, OnClickListener {
+		onChangePlayListener, OnClickListener, onUpdateProgressListener {
 
 	private static final int TAB_INDEX0 = 0;
 	private static final int TAB_INDEX1 = 1;
@@ -45,7 +47,7 @@ public class MusicPlayActivity extends Activity implements
 	private TextView mSongName;
 	private TextView mSingerName;
 	private RelativeLayout mLayout;
-	private boolean mIsPlaying = false;
+	private ProgressBar mPBar;
 	private boolean mScanNeeded = true;
 	// private AudioPlayer mAudioPlayer;
 	private AudioServiceController mAudioController;
@@ -124,6 +126,8 @@ public class MusicPlayActivity extends Activity implements
 				.setOnPageChangeListener(new ViewPagerOnChangeListener());
 		mViewPageContainer.setCurrentItem(TAB_INDEX0);
 		mSongFragment.setOnChangePlayListener(this);
+		mSongFragment.setOnUpdateProgresListener(this);
+		mPBar = (ProgressBar) findViewById(R.id.pb_bottom_play);
 	}
 
 	/**
@@ -204,7 +208,6 @@ public class MusicPlayActivity extends Activity implements
 		// TODO Auto-generated method stub
 		mSongName.setText(name);
 		mSingerName.setText(singer);
-		mIsPlaying = true;
 		mPlayPause.setImageResource(R.drawable.bottom_stop_selector);
 	}
 
@@ -231,5 +234,14 @@ public class MusicPlayActivity extends Activity implements
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void onUpdateProgress(int time, int length) {
+		// TODO Auto-generated method stub
+		if (time == 0) {
+			mPBar.setMax(length);
+		}
+		mPBar.setProgress(time);
 	}
 }
