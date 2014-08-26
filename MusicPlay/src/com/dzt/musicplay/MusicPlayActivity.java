@@ -14,10 +14,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -58,7 +56,7 @@ public class MusicPlayActivity extends Activity implements
 	private RelativeLayout mLayout;
 	private ProgressBar mPBar;
 	private boolean mScanNeeded = true;
-	// private AudioPlayer mAudioPlayer;
+	private boolean mIsFirst = false;
 	private AudioServiceController mAudioController;
 
 	@Override
@@ -106,6 +104,7 @@ public class MusicPlayActivity extends Activity implements
 		if (mScanNeeded)
 			MediaLibrary.getInstance(getApplicationContext()).loadMediaItems(
 					getApplicationContext());
+		mIsFirst = true;
 	}
 
 	@Override
@@ -119,13 +118,7 @@ public class MusicPlayActivity extends Activity implements
 		MediaLibrary.getInstance(getApplicationContext()).stop();
 		mAudioController.removeAudioPlayer(mSongFragment);
 		AudioServiceController.getInstance().unbindAudioService(this);
-	}
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-
+		mIsFirst = false;
 	}
 
 	private void initViewPager() {
@@ -259,8 +252,9 @@ public class MusicPlayActivity extends Activity implements
 		// TODO Auto-generated method stub
 		System.out.println("onUpdateProgress time = " + time + " length = "
 				+ length);
-		if (time == 0) {
+		if (mIsFirst || time == 0) {
 			mPBar.setMax(length);
+			mIsFirst = false;
 		}
 		mPBar.setProgress(time);
 	}

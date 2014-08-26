@@ -347,6 +347,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_horizontal_margin=0x7f090000;
         public static final int activity_vertical_margin=0x7f090001;
         public static final int audio_browser_item_size=0x7f090004;
+        public static final int font_play_time=0x7f090006;
         public static final int listview_bottom_padding=0x7f090005;
         public static final int shadow_width=0x7f090002;
         public static final int widget_margin=0x7f090003;
@@ -417,17 +418,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int top_bg=0x7f02003e;
     }
     public static final class id {
-        public static final int action_settings=0x7f0b002c;
+        public static final int action_settings=0x7f0b002e;
         public static final int album=0x7f0b001e;
         public static final int artist=0x7f0b0015;
         public static final int backward=0x7f0b001f;
         public static final int bootom_play_bar=0x7f0b0003;
-        public static final int btn_next_play=0x7f0b0026;
+        public static final int btn_next_play=0x7f0b0028;
         public static final int btn_play_pause=0x7f0b0007;
-        public static final int btn_play_pause_play=0x7f0b0024;
-        public static final int btn_previous_play=0x7f0b0025;
-        public static final int btn_singer=0x7f0b002b;
-        public static final int btn_song=0x7f0b002a;
+        public static final int btn_play_pause_play=0x7f0b0026;
+        public static final int btn_previous_play=0x7f0b0027;
+        public static final int btn_singer=0x7f0b002d;
+        public static final int btn_song=0x7f0b002c;
         public static final int buttons=0x7f0b001d;
         public static final int content=0x7f0b0018;
         public static final int cover=0x7f0b000d;
@@ -436,7 +437,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int icon_1=0x7f0b0021;
         public static final int icon_2=0x7f0b0022;
         public static final int item_expansion=0x7f0b0014;
-        public static final int iv_album=0x7f0b0029;
+        public static final int iv_album=0x7f0b002b;
         public static final int iv_albums_image=0x7f0b000b;
         public static final int iv_albums_play=0x7f0b0004;
         public static final int layout_footer=0x7f0b0017;
@@ -447,9 +448,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int play_pause=0x7f0b001a;
         public static final int playlist_item=0x7f0b0013;
         public static final int sb_play=0x7f0b0023;
-        public static final int singer_list=0x7f0b0027;
+        public static final int singer_list=0x7f0b0029;
         public static final int songName=0x7f0b0019;
-        public static final int song_list=0x7f0b0028;
+        public static final int song_list=0x7f0b002a;
         public static final int song_name=0x7f0b000e;
         public static final int song_name_play=0x7f0b0005;
         public static final int song_signer=0x7f0b0010;
@@ -459,8 +460,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int tab_view=0x7f0b0001;
         public static final int tabpage_frame=0x7f0b0002;
         public static final int title=0x7f0b0012;
+        public static final int tv_length=0x7f0b0025;
         public static final int tv_name_albums=0x7f0b0009;
         public static final int tv_singer_albums=0x7f0b000a;
+        public static final int tv_time=0x7f0b0024;
         public static final int vp_play=0x7f0b0020;
     }
     public static final class layout {

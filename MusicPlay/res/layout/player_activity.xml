@@ -56,6 +56,26 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
 
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/sb_play"
+            android:layout_marginLeft="20sp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_play_time" />
+
+        <TextView
+            android:id="@+id/tv_length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/sb_play"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_play_time" />
+
         <ImageButton
             android:id="@+id/btn_play_pause_play"
             android:layout_width="wrap_content"

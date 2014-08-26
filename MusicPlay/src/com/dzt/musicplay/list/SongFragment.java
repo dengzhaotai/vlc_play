@@ -289,7 +289,7 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 		// TODO Auto-generated method stub
 		int time = mAudioController.getTime();
 		int length = mAudioController.getLength();
-		System.out.println("song updateProgress time = " + time);
+		//System.out.println("song updateProgress time = " + time);
 		if (updateListener != null)
 			updateListener.onUpdateProgress(time, length);
 	}
