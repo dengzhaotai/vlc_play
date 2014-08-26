@@ -29,6 +29,7 @@ import com.dzt.musicplay.WeakHandler;
 import com.dzt.musicplay.constant.GlobalConstants;
 import com.dzt.musicplay.constant.GlobalVariables;
 import com.dzt.musicplay.list.AudioBrowserListAdapter.ListItem;
+import com.dzt.musicplay.player.AudioPlayingList;
 import com.dzt.musicplay.player.AudioServiceController;
 
 public class SongFragment extends Fragment implements IAudioPlayer {
@@ -42,7 +43,6 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 	private onChangePlayListener listener = null;
 	private onUpdateProgressListener updateListener = null;
 	private MediaLibrary mMediaLibrary;
-	private int mFlingViewPosition = 0;
 
 	public interface onChangePlayListener {
 		public void onChangePlay(String singer, String url);
@@ -81,7 +81,7 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 					int position, long id) {
 				// TODO Auto-generated method stub
 				ListItem item = mSongsAdapter.getItem(position);
-				GlobalVariables.mCurrPos = position + 1;
+				GlobalVariables.mCurrPos = position + 1; // 当前播放的pos
 				String singer = item.mSubTitle;
 				String name = item.mTitle;
 
@@ -197,11 +197,14 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 			hConnect.SetPosition(pos);
 			return;
 		}
-		ArrayList<String> mediaLocation = mSongsAdapter.getLocations(pos);
-		System.out.println("-------------------------------------songListener");
-		mAudioController.load(mediaLocation, 0);
-
-		// mAudioController.loadMediaList(medias, pos);
+		// AudioPlayingList.getInstance().SetServicePlayList(medias);
+		// ArrayList<String> mediaLocation = mSongsAdapter.getLocations(pos);
+		// mAudioController.load(mediaLocation, 0);
+		// for (int i = 0; i < medias.size(); i++) {
+		// Media media = medias.get(i);
+		// System.out.println("getLocation = " + media.getLocation());
+		// }
+		mAudioController.loadMediaList(medias, pos);
 		GlobalConstants.print_i(getClass(), "playAudio----end tmp = ");
 	}
 
@@ -289,7 +292,7 @@ public class SongFragment extends Fragment implements IAudioPlayer {
 		// TODO Auto-generated method stub
 		int time = mAudioController.getTime();
 		int length = mAudioController.getLength();
-		//System.out.println("song updateProgress time = " + time);
+		// System.out.println("song updateProgress time = " + time);
 		if (updateListener != null)
 			updateListener.onUpdateProgress(time, length);
 	}
